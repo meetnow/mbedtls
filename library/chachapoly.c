@@ -396,7 +396,7 @@ int mbedtls_chachapoly_auth_decrypt( mbedtls_chachapoly_context *ctx,
 
 #if defined(MBEDTLS_SELF_TEST)
 
-static const unsigned char test_key[1][32] =
+static const unsigned char chachapoly_test_key[1][32] =
 {
     {
         0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87,
@@ -406,7 +406,7 @@ static const unsigned char test_key[1][32] =
     }
 };
 
-static const unsigned char test_nonce[1][12] =
+static const unsigned char chachapoly_test_nonce[1][12] =
 {
     {
         0x07, 0x00, 0x00, 0x00,                         /* 32-bit common part */
@@ -414,7 +414,7 @@ static const unsigned char test_nonce[1][12] =
     }
 };
 
-static const unsigned char test_aad[1][12] =
+static const unsigned char chachapoly_test_aad[1][12] =
 {
     {
         0x50, 0x51, 0x52, 0x53, 0xc0, 0xc1, 0xc2, 0xc3,
@@ -422,12 +422,12 @@ static const unsigned char test_aad[1][12] =
     }
 };
 
-static const size_t test_aad_len[1] =
+static const size_t chachapoly_test_aad_len[1] =
 {
     12U
 };
 
-static const unsigned char test_input[1][114] =
+static const unsigned char chachapoly_test_input[1][114] =
 {
     {
         0x4c, 0x61, 0x64, 0x69, 0x65, 0x73, 0x20, 0x61,
@@ -448,7 +448,7 @@ static const unsigned char test_input[1][114] =
     }
 };
 
-static const unsigned char test_output[1][114] =
+static const unsigned char chachapoly_test_output[1][114] =
 {
     {
         0xd3, 0x1a, 0x8d, 0x34, 0x64, 0x8e, 0x60, 0xdb,
@@ -469,12 +469,12 @@ static const unsigned char test_output[1][114] =
     }
 };
 
-static const size_t test_input_len[1] =
+static const size_t chachapoly_test_input_len[1] =
 {
     114U
 };
 
-static const unsigned char test_mac[1][16] =
+static const unsigned char chachapoly_test_mac[1][16] =
 {
     {
         0x1a, 0xe1, 0x0b, 0x59, 0x4f, 0x09, 0xe2, 0x6a,
@@ -510,24 +510,24 @@ int mbedtls_chachapoly_self_test( int verbose )
 
         mbedtls_chachapoly_init( &ctx );
 
-        ret = mbedtls_chachapoly_setkey( &ctx, test_key[i] );
+        ret = mbedtls_chachapoly_setkey( &ctx, chachapoly_test_key[i] );
         ASSERT( 0 == ret, ( "setkey() error code: %i\n", ret ) );
 
         ret = mbedtls_chachapoly_encrypt_and_tag( &ctx,
-                                                  test_input_len[i],
-                                                  test_nonce[i],
-                                                  test_aad[i],
-                                                  test_aad_len[i],
-                                                  test_input[i],
+                                                  chachapoly_test_input_len[i],
+                                                  chachapoly_test_nonce[i],
+                                                  chachapoly_test_aad[i],
+                                                  chachapoly_test_aad_len[i],
+                                                  chachapoly_test_input[i],
                                                   output,
                                                   mac );
 
         ASSERT( 0 == ret, ( "crypt_and_tag() error code: %i\n", ret ) );
 
-        ASSERT( 0 == memcmp( output, test_output[i], test_input_len[i] ),
+        ASSERT( 0 == memcmp( output, chachapoly_test_output[i], chachapoly_test_input_len[i] ),
                 ( "failure (wrong output)\n" ) );
 
-        ASSERT( 0 == memcmp( mac, test_mac[i], 16U ),
+        ASSERT( 0 == memcmp( mac, chachapoly_test_mac[i], 16U ),
                 ( "failure (wrong MAC)\n" ) );
 
         mbedtls_chachapoly_free( &ctx );
