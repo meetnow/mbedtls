@@ -719,6 +719,9 @@ int mbedtls_pem_write_enc_buffer( const char *header, const char *footer,
         mbedtls_platform_zeroize( aes_iv, sizeof( aes_iv ) );
     }
 #endif /* MBEDTLS_AES_C */
+    else {
+        ret = 0;
+    }
 
     if ( ret == 0 ) {
         p = xheader;
