@@ -94,7 +94,7 @@ static int aes_padlock_ace = -1;
 /*
  * Forward S-box
  */
-static const unsigned char FSb[256] =
+static const unsigned char aes_FSb[256] =
 {
     0x63, 0x7C, 0x77, 0x7B, 0xF2, 0x6B, 0x6F, 0xC5,
     0x30, 0x01, 0x67, 0x2B, 0xFE, 0xD7, 0xAB, 0x76,
@@ -201,21 +201,21 @@ static const unsigned char FSb[256] =
     V(CB,B0,B0,7B), V(FC,54,54,A8), V(D6,BB,BB,6D), V(3A,16,16,2C)
 
 #define V(a,b,c,d) 0x##a##b##c##d
-static const uint32_t FT0[256] = { FT };
+static const uint32_t aes_FT0[256] = { FT };
 #undef V
 
 #if !defined(MBEDTLS_AES_FEWER_TABLES)
 
 #define V(a,b,c,d) 0x##b##c##d##a
-static const uint32_t FT1[256] = { FT };
+static const uint32_t aes_FT1[256] = { FT };
 #undef V
 
 #define V(a,b,c,d) 0x##c##d##a##b
-static const uint32_t FT2[256] = { FT };
+static const uint32_t aes_FT2[256] = { FT };
 #undef V
 
 #define V(a,b,c,d) 0x##d##a##b##c
-static const uint32_t FT3[256] = { FT };
+static const uint32_t aes_FT3[256] = { FT };
 #undef V
 
 #endif /* !MBEDTLS_AES_FEWER_TABLES */
@@ -225,7 +225,7 @@ static const uint32_t FT3[256] = { FT };
 /*
  * Reverse S-box
  */
-static const unsigned char RSb[256] =
+static const unsigned char aes_RSb[256] =
 {
     0x52, 0x09, 0x6A, 0xD5, 0x30, 0x36, 0xA5, 0x38,
     0xBF, 0x40, 0xA3, 0x9E, 0x81, 0xF3, 0xD7, 0xFB,
@@ -332,21 +332,21 @@ static const unsigned char RSb[256] =
     V(61,84,CB,7B), V(70,B6,32,D5), V(74,5C,6C,48), V(42,57,B8,D0)
 
 #define V(a,b,c,d) 0x##a##b##c##d
-static const uint32_t RT0[256] = { RT };
+static const uint32_t aes_RT0[256] = { RT };
 #undef V
 
 #if !defined(MBEDTLS_AES_FEWER_TABLES)
 
 #define V(a,b,c,d) 0x##b##c##d##a
-static const uint32_t RT1[256] = { RT };
+static const uint32_t aes_RT1[256] = { RT };
 #undef V
 
 #define V(a,b,c,d) 0x##c##d##a##b
-static const uint32_t RT2[256] = { RT };
+static const uint32_t aes_RT2[256] = { RT };
 #undef V
 
 #define V(a,b,c,d) 0x##d##a##b##c
-static const uint32_t RT3[256] = { RT };
+static const uint32_t aes_RT3[256] = { RT };
 #undef V
 
 #endif /* !MBEDTLS_AES_FEWER_TABLES */
@@ -356,7 +356,7 @@ static const uint32_t RT3[256] = { RT };
 /*
  * Round constants
  */
-static const uint32_t RCON[10] =
+static const uint32_t aes_RCON[10] =
 {
     0x00000001, 0x00000002, 0x00000004, 0x00000008,
     0x00000010, 0x00000020, 0x00000040, 0x00000080,
@@ -368,29 +368,29 @@ static const uint32_t RCON[10] =
 /*
  * Forward S-box & tables
  */
-static unsigned char FSb[256];
-static uint32_t FT0[256];
+static unsigned char aes_FSb[256];
+static uint32_t aes_FT0[256];
 #if !defined(MBEDTLS_AES_FEWER_TABLES)
-static uint32_t FT1[256];
-static uint32_t FT2[256];
-static uint32_t FT3[256];
+static uint32_t aes_FT1[256];
+static uint32_t aes_FT2[256];
+static uint32_t aes_FT3[256];
 #endif /* !MBEDTLS_AES_FEWER_TABLES */
 
 /*
  * Reverse S-box & tables
  */
-static unsigned char RSb[256];
-static uint32_t RT0[256];
+static unsigned char aes_RSb[256];
+static uint32_t aes_RT0[256];
 #if !defined(MBEDTLS_AES_FEWER_TABLES)
-static uint32_t RT1[256];
-static uint32_t RT2[256];
-static uint32_t RT3[256];
+static uint32_t aes_RT1[256];
+static uint32_t aes_RT2[256];
+static uint32_t aes_RT3[256];
 #endif /* !MBEDTLS_AES_FEWER_TABLES */
 
 /*
  * Round constants
  */
-static uint32_t RCON[10];
+static uint32_t aes_RCON[10];
 
 /*
  * Tables generation code
@@ -422,15 +422,15 @@ static void aes_gen_tables( void )
      */
     for( i = 0, x = 1; i < 10; i++ )
     {
-        RCON[i] = (uint32_t) x;
+        aes_RCON[i] = (uint32_t) x;
         x = XTIME( x ) & 0xFF;
     }
 
     /*
      * generate the forward and reverse S-boxes
      */
-    FSb[0x00] = 0x63;
-    RSb[0x63] = 0x00;
+    aes_FSb[0x00] = 0x63;
+    aes_RSb[0x63] = 0x00;
 
     for( i = 1; i < 256; i++ )
     {
@@ -442,8 +442,8 @@ static void aes_gen_tables( void )
         x ^= y; y = ( ( y << 1 ) | ( y >> 7 ) ) & 0xFF;
         x ^= y ^ 0x63;
 
-        FSb[i] = (unsigned char) x;
-        RSb[x] = (unsigned char) i;
+        aes_FSb[i] = (unsigned char) x;
+        aes_RSb[x] = (unsigned char) i;
     }
 
     /*
@@ -451,32 +451,32 @@ static void aes_gen_tables( void )
      */
     for( i = 0; i < 256; i++ )
     {
-        x = FSb[i];
+        x = aes_FSb[i];
         y = XTIME( x ) & 0xFF;
         z =  ( y ^ x ) & 0xFF;
 
-        FT0[i] = ( (uint32_t) y       ) ^
-                 ( (uint32_t) x <<  8 ) ^
-                 ( (uint32_t) x << 16 ) ^
-                 ( (uint32_t) z << 24 );
+        aes_FT0[i] = ( (uint32_t) y       ) ^
+                     ( (uint32_t) x <<  8 ) ^
+                     ( (uint32_t) x << 16 ) ^
+                     ( (uint32_t) z << 24 );
 
 #if !defined(MBEDTLS_AES_FEWER_TABLES)
-        FT1[i] = ROTL8( FT0[i] );
-        FT2[i] = ROTL8( FT1[i] );
-        FT3[i] = ROTL8( FT2[i] );
+        aes_FT1[i] = ROTL8( aes_FT0[i] );
+        aes_FT2[i] = ROTL8( aes_FT1[i] );
+        aes_FT3[i] = ROTL8( aes_FT2[i] );
 #endif /* !MBEDTLS_AES_FEWER_TABLES */
 
-        x = RSb[i];
+        x = aes_RSb[i];
 
-        RT0[i] = ( (uint32_t) MUL( 0x0E, x )       ) ^
+        aes_RT0[i] = ( (uint32_t) MUL( 0x0E, x )       ) ^
                  ( (uint32_t) MUL( 0x09, x ) <<  8 ) ^
                  ( (uint32_t) MUL( 0x0D, x ) << 16 ) ^
                  ( (uint32_t) MUL( 0x0B, x ) << 24 );
 
 #if !defined(MBEDTLS_AES_FEWER_TABLES)
-        RT1[i] = ROTL8( RT0[i] );
-        RT2[i] = ROTL8( RT1[i] );
-        RT3[i] = ROTL8( RT2[i] );
+        aes_RT1[i] = ROTL8( aes_RT0[i] );
+        aes_RT2[i] = ROTL8( aes_RT1[i] );
+        aes_RT3[i] = ROTL8( aes_RT2[i] );
 #endif /* !MBEDTLS_AES_FEWER_TABLES */
     }
 }
@@ -491,27 +491,27 @@ static void aes_gen_tables( void )
 #define ROTL16(x) ( (uint32_t)( ( x ) << 16 ) + (uint32_t)( ( x ) >> 16 ) )
 #define ROTL24(x) ( (uint32_t)( ( x ) << 24 ) + (uint32_t)( ( x ) >>  8 ) )
 
-#define AES_RT0(idx) RT0[idx]
-#define AES_RT1(idx) ROTL8(  RT0[idx] )
-#define AES_RT2(idx) ROTL16( RT0[idx] )
-#define AES_RT3(idx) ROTL24( RT0[idx] )
+#define AES_RT0(idx) aes_RT0[idx]
+#define AES_RT1(idx) ROTL8(  aes_RT0[idx] )
+#define AES_RT2(idx) ROTL16( aes_RT0[idx] )
+#define AES_RT3(idx) ROTL24( aes_RT0[idx] )
 
-#define AES_FT0(idx) FT0[idx]
-#define AES_FT1(idx) ROTL8(  FT0[idx] )
-#define AES_FT2(idx) ROTL16( FT0[idx] )
-#define AES_FT3(idx) ROTL24( FT0[idx] )
+#define AES_FT0(idx) aes_FT0[idx]
+#define AES_FT1(idx) ROTL8(  aes_FT0[idx] )
+#define AES_FT2(idx) ROTL16( aes_FT0[idx] )
+#define AES_FT3(idx) ROTL24( aes_FT0[idx] )
 
 #else /* MBEDTLS_AES_FEWER_TABLES */
 
-#define AES_RT0(idx) RT0[idx]
-#define AES_RT1(idx) RT1[idx]
-#define AES_RT2(idx) RT2[idx]
-#define AES_RT3(idx) RT3[idx]
+#define AES_RT0(idx) aes_RT0[idx]
+#define AES_RT1(idx) aes_RT1[idx]
+#define AES_RT2(idx) aes_RT2[idx]
+#define AES_RT3(idx) aes_RT3[idx]
 
-#define AES_FT0(idx) FT0[idx]
-#define AES_FT1(idx) FT1[idx]
-#define AES_FT2(idx) FT2[idx]
-#define AES_FT3(idx) FT3[idx]
+#define AES_FT0(idx) aes_FT0[idx]
+#define AES_FT1(idx) aes_FT1[idx]
+#define AES_FT2(idx) aes_FT2[idx]
+#define AES_FT3(idx) aes_FT3[idx]
 
 #endif /* MBEDTLS_AES_FEWER_TABLES */
 
@@ -604,11 +604,11 @@ int mbedtls_aes_setkey_enc( mbedtls_aes_context *ctx, const unsigned char *key,
 
             for( i = 0; i < 10; i++, RK += 4 )
             {
-                RK[4]  = RK[0] ^ RCON[i] ^
-                ( (uint32_t) FSb[ ( RK[3] >>  8 ) & 0xFF ]       ) ^
-                ( (uint32_t) FSb[ ( RK[3] >> 16 ) & 0xFF ] <<  8 ) ^
-                ( (uint32_t) FSb[ ( RK[3] >> 24 ) & 0xFF ] << 16 ) ^
-                ( (uint32_t) FSb[ ( RK[3]       ) & 0xFF ] << 24 );
+                RK[4]  = RK[0] ^ aes_RCON[i] ^
+                ( (uint32_t) aes_FSb[ ( RK[3] >>  8 ) & 0xFF ]       ) ^
+                ( (uint32_t) aes_FSb[ ( RK[3] >> 16 ) & 0xFF ] <<  8 ) ^
+                ( (uint32_t) aes_FSb[ ( RK[3] >> 24 ) & 0xFF ] << 16 ) ^
+                ( (uint32_t) aes_FSb[ ( RK[3]       ) & 0xFF ] << 24 );
 
                 RK[5]  = RK[1] ^ RK[4];
                 RK[6]  = RK[2] ^ RK[5];
@@ -620,11 +620,11 @@ int mbedtls_aes_setkey_enc( mbedtls_aes_context *ctx, const unsigned char *key,
 
             for( i = 0; i < 8; i++, RK += 6 )
             {
-                RK[6]  = RK[0] ^ RCON[i] ^
-                ( (uint32_t) FSb[ ( RK[5] >>  8 ) & 0xFF ]       ) ^
-                ( (uint32_t) FSb[ ( RK[5] >> 16 ) & 0xFF ] <<  8 ) ^
-                ( (uint32_t) FSb[ ( RK[5] >> 24 ) & 0xFF ] << 16 ) ^
-                ( (uint32_t) FSb[ ( RK[5]       ) & 0xFF ] << 24 );
+                RK[6]  = RK[0] ^ aes_RCON[i] ^
+                ( (uint32_t) aes_FSb[ ( RK[5] >>  8 ) & 0xFF ]       ) ^
+                ( (uint32_t) aes_FSb[ ( RK[5] >> 16 ) & 0xFF ] <<  8 ) ^
+                ( (uint32_t) aes_FSb[ ( RK[5] >> 24 ) & 0xFF ] << 16 ) ^
+                ( (uint32_t) aes_FSb[ ( RK[5]       ) & 0xFF ] << 24 );
 
                 RK[7]  = RK[1] ^ RK[6];
                 RK[8]  = RK[2] ^ RK[7];
@@ -638,21 +638,21 @@ int mbedtls_aes_setkey_enc( mbedtls_aes_context *ctx, const unsigned char *key,
 
             for( i = 0; i < 7; i++, RK += 8 )
             {
-                RK[8]  = RK[0] ^ RCON[i] ^
-                ( (uint32_t) FSb[ ( RK[7] >>  8 ) & 0xFF ]       ) ^
-                ( (uint32_t) FSb[ ( RK[7] >> 16 ) & 0xFF ] <<  8 ) ^
-                ( (uint32_t) FSb[ ( RK[7] >> 24 ) & 0xFF ] << 16 ) ^
-                ( (uint32_t) FSb[ ( RK[7]       ) & 0xFF ] << 24 );
+                RK[8]  = RK[0] ^ aes_RCON[i] ^
+                ( (uint32_t) aes_FSb[ ( RK[7] >>  8 ) & 0xFF ]       ) ^
+                ( (uint32_t) aes_FSb[ ( RK[7] >> 16 ) & 0xFF ] <<  8 ) ^
+                ( (uint32_t) aes_FSb[ ( RK[7] >> 24 ) & 0xFF ] << 16 ) ^
+                ( (uint32_t) aes_FSb[ ( RK[7]       ) & 0xFF ] << 24 );
 
                 RK[9]  = RK[1] ^ RK[8];
                 RK[10] = RK[2] ^ RK[9];
                 RK[11] = RK[3] ^ RK[10];
 
                 RK[12] = RK[4] ^
-                ( (uint32_t) FSb[ ( RK[11]       ) & 0xFF ]       ) ^
-                ( (uint32_t) FSb[ ( RK[11] >>  8 ) & 0xFF ] <<  8 ) ^
-                ( (uint32_t) FSb[ ( RK[11] >> 16 ) & 0xFF ] << 16 ) ^
-                ( (uint32_t) FSb[ ( RK[11] >> 24 ) & 0xFF ] << 24 );
+                ( (uint32_t) aes_FSb[ ( RK[11]       ) & 0xFF ]       ) ^
+                ( (uint32_t) aes_FSb[ ( RK[11] >>  8 ) & 0xFF ] <<  8 ) ^
+                ( (uint32_t) aes_FSb[ ( RK[11] >> 16 ) & 0xFF ] << 16 ) ^
+                ( (uint32_t) aes_FSb[ ( RK[11] >> 24 ) & 0xFF ] << 24 );
 
                 RK[13] = RK[5] ^ RK[12];
                 RK[14] = RK[6] ^ RK[13];
@@ -718,10 +718,10 @@ int mbedtls_aes_setkey_dec( mbedtls_aes_context *ctx, const unsigned char *key,
     {
         for( j = 0; j < 4; j++, SK++ )
         {
-            *RK++ = AES_RT0( FSb[ ( *SK       ) & 0xFF ] ) ^
-                    AES_RT1( FSb[ ( *SK >>  8 ) & 0xFF ] ) ^
-                    AES_RT2( FSb[ ( *SK >> 16 ) & 0xFF ] ) ^
-                    AES_RT3( FSb[ ( *SK >> 24 ) & 0xFF ] );
+            *RK++ = AES_RT0( aes_FSb[ ( *SK       ) & 0xFF ] ) ^
+                    AES_RT1( aes_FSb[ ( *SK >>  8 ) & 0xFF ] ) ^
+                    AES_RT2( aes_FSb[ ( *SK >> 16 ) & 0xFF ] ) ^
+                    AES_RT3( aes_FSb[ ( *SK >> 24 ) & 0xFF ] );
         }
     }
 
@@ -888,28 +888,28 @@ int mbedtls_internal_aes_encrypt( mbedtls_aes_context *ctx,
     AES_FROUND( Y0, Y1, Y2, Y3, X0, X1, X2, X3 );
 
     X0 = *RK++ ^ \
-            ( (uint32_t) FSb[ ( Y0       ) & 0xFF ]       ) ^
-            ( (uint32_t) FSb[ ( Y1 >>  8 ) & 0xFF ] <<  8 ) ^
-            ( (uint32_t) FSb[ ( Y2 >> 16 ) & 0xFF ] << 16 ) ^
-            ( (uint32_t) FSb[ ( Y3 >> 24 ) & 0xFF ] << 24 );
+            ( (uint32_t) aes_FSb[ ( Y0       ) & 0xFF ]       ) ^
+            ( (uint32_t) aes_FSb[ ( Y1 >>  8 ) & 0xFF ] <<  8 ) ^
+            ( (uint32_t) aes_FSb[ ( Y2 >> 16 ) & 0xFF ] << 16 ) ^
+            ( (uint32_t) aes_FSb[ ( Y3 >> 24 ) & 0xFF ] << 24 );
 
     X1 = *RK++ ^ \
-            ( (uint32_t) FSb[ ( Y1       ) & 0xFF ]       ) ^
-            ( (uint32_t) FSb[ ( Y2 >>  8 ) & 0xFF ] <<  8 ) ^
-            ( (uint32_t) FSb[ ( Y3 >> 16 ) & 0xFF ] << 16 ) ^
-            ( (uint32_t) FSb[ ( Y0 >> 24 ) & 0xFF ] << 24 );
+            ( (uint32_t) aes_FSb[ ( Y1       ) & 0xFF ]       ) ^
+            ( (uint32_t) aes_FSb[ ( Y2 >>  8 ) & 0xFF ] <<  8 ) ^
+            ( (uint32_t) aes_FSb[ ( Y3 >> 16 ) & 0xFF ] << 16 ) ^
+            ( (uint32_t) aes_FSb[ ( Y0 >> 24 ) & 0xFF ] << 24 );
 
     X2 = *RK++ ^ \
-            ( (uint32_t) FSb[ ( Y2       ) & 0xFF ]       ) ^
-            ( (uint32_t) FSb[ ( Y3 >>  8 ) & 0xFF ] <<  8 ) ^
-            ( (uint32_t) FSb[ ( Y0 >> 16 ) & 0xFF ] << 16 ) ^
-            ( (uint32_t) FSb[ ( Y1 >> 24 ) & 0xFF ] << 24 );
+            ( (uint32_t) aes_FSb[ ( Y2       ) & 0xFF ]       ) ^
+            ( (uint32_t) aes_FSb[ ( Y3 >>  8 ) & 0xFF ] <<  8 ) ^
+            ( (uint32_t) aes_FSb[ ( Y0 >> 16 ) & 0xFF ] << 16 ) ^
+            ( (uint32_t) aes_FSb[ ( Y1 >> 24 ) & 0xFF ] << 24 );
 
     X3 = *RK++ ^ \
-            ( (uint32_t) FSb[ ( Y3       ) & 0xFF ]       ) ^
-            ( (uint32_t) FSb[ ( Y0 >>  8 ) & 0xFF ] <<  8 ) ^
-            ( (uint32_t) FSb[ ( Y1 >> 16 ) & 0xFF ] << 16 ) ^
-            ( (uint32_t) FSb[ ( Y2 >> 24 ) & 0xFF ] << 24 );
+            ( (uint32_t) aes_FSb[ ( Y3       ) & 0xFF ]       ) ^
+            ( (uint32_t) aes_FSb[ ( Y0 >>  8 ) & 0xFF ] <<  8 ) ^
+            ( (uint32_t) aes_FSb[ ( Y1 >> 16 ) & 0xFF ] << 16 ) ^
+            ( (uint32_t) aes_FSb[ ( Y2 >> 24 ) & 0xFF ] << 24 );
 
     PUT_UINT32_LE( X0, output,  0 );
     PUT_UINT32_LE( X1, output,  4 );
@@ -956,28 +956,28 @@ int mbedtls_internal_aes_decrypt( mbedtls_aes_context *ctx,
     AES_RROUND( Y0, Y1, Y2, Y3, X0, X1, X2, X3 );
 
     X0 = *RK++ ^ \
-            ( (uint32_t) RSb[ ( Y0       ) & 0xFF ]       ) ^
-            ( (uint32_t) RSb[ ( Y3 >>  8 ) & 0xFF ] <<  8 ) ^
-            ( (uint32_t) RSb[ ( Y2 >> 16 ) & 0xFF ] << 16 ) ^
-            ( (uint32_t) RSb[ ( Y1 >> 24 ) & 0xFF ] << 24 );
+            ( (uint32_t) aes_RSb[ ( Y0       ) & 0xFF ]       ) ^
+            ( (uint32_t) aes_RSb[ ( Y3 >>  8 ) & 0xFF ] <<  8 ) ^
+            ( (uint32_t) aes_RSb[ ( Y2 >> 16 ) & 0xFF ] << 16 ) ^
+            ( (uint32_t) aes_RSb[ ( Y1 >> 24 ) & 0xFF ] << 24 );
 
     X1 = *RK++ ^ \
-            ( (uint32_t) RSb[ ( Y1       ) & 0xFF ]       ) ^
-            ( (uint32_t) RSb[ ( Y0 >>  8 ) & 0xFF ] <<  8 ) ^
-            ( (uint32_t) RSb[ ( Y3 >> 16 ) & 0xFF ] << 16 ) ^
-            ( (uint32_t) RSb[ ( Y2 >> 24 ) & 0xFF ] << 24 );
+            ( (uint32_t) aes_RSb[ ( Y1       ) & 0xFF ]       ) ^
+            ( (uint32_t) aes_RSb[ ( Y0 >>  8 ) & 0xFF ] <<  8 ) ^
+            ( (uint32_t) aes_RSb[ ( Y3 >> 16 ) & 0xFF ] << 16 ) ^
+            ( (uint32_t) aes_RSb[ ( Y2 >> 24 ) & 0xFF ] << 24 );
 
     X2 = *RK++ ^ \
-            ( (uint32_t) RSb[ ( Y2       ) & 0xFF ]       ) ^
-            ( (uint32_t) RSb[ ( Y1 >>  8 ) & 0xFF ] <<  8 ) ^
-            ( (uint32_t) RSb[ ( Y0 >> 16 ) & 0xFF ] << 16 ) ^
-            ( (uint32_t) RSb[ ( Y3 >> 24 ) & 0xFF ] << 24 );
+            ( (uint32_t) aes_RSb[ ( Y2       ) & 0xFF ]       ) ^
+            ( (uint32_t) aes_RSb[ ( Y1 >>  8 ) & 0xFF ] <<  8 ) ^
+            ( (uint32_t) aes_RSb[ ( Y0 >> 16 ) & 0xFF ] << 16 ) ^
+            ( (uint32_t) aes_RSb[ ( Y3 >> 24 ) & 0xFF ] << 24 );
 
     X3 = *RK++ ^ \
-            ( (uint32_t) RSb[ ( Y3       ) & 0xFF ]       ) ^
-            ( (uint32_t) RSb[ ( Y2 >>  8 ) & 0xFF ] <<  8 ) ^
-            ( (uint32_t) RSb[ ( Y1 >> 16 ) & 0xFF ] << 16 ) ^
-            ( (uint32_t) RSb[ ( Y0 >> 24 ) & 0xFF ] << 24 );
+            ( (uint32_t) aes_RSb[ ( Y3       ) & 0xFF ]       ) ^
+            ( (uint32_t) aes_RSb[ ( Y2 >>  8 ) & 0xFF ] <<  8 ) ^
+            ( (uint32_t) aes_RSb[ ( Y1 >> 16 ) & 0xFF ] << 16 ) ^
+            ( (uint32_t) aes_RSb[ ( Y0 >> 24 ) & 0xFF ] << 24 );
 
     PUT_UINT32_LE( X0, output,  0 );
     PUT_UINT32_LE( X1, output,  4 );

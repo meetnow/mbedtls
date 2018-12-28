@@ -353,7 +353,7 @@ cleanup:
 
 #if defined(MBEDTLS_SELF_TEST)
 
-static const unsigned char test_keys[2][32] =
+static const unsigned char chacha20_test_keys[2][32] =
 {
     {
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -369,7 +369,7 @@ static const unsigned char test_keys[2][32] =
     }
 };
 
-static const unsigned char test_nonces[2][12] =
+static const unsigned char chacha20_test_nonces[2][12] =
 {
     {
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -381,13 +381,13 @@ static const unsigned char test_nonces[2][12] =
     }
 };
 
-static const uint32_t test_counters[2] =
+static const uint32_t chacha20_test_counters[2] =
 {
     0U,
     1U
 };
 
-static const unsigned char test_input[2][375] =
+static const unsigned char chacha20_test_input[2][375] =
 {
     {
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -450,7 +450,7 @@ static const unsigned char test_input[2][375] =
     }
 };
 
-static const unsigned char test_output[2][375] =
+static const unsigned char chacha20_test_output[2][375] =
 {
     {
         0x76, 0xb8, 0xe0, 0xad, 0xa0, 0xf1, 0x3d, 0x90,
@@ -513,7 +513,7 @@ static const unsigned char test_output[2][375] =
     }
 };
 
-static const size_t test_lengths[2] =
+static const size_t chacha20_test_lengths[2] =
 {
     64U,
     375U
@@ -543,16 +543,16 @@ int mbedtls_chacha20_self_test( int verbose )
         if( verbose != 0 )
             mbedtls_printf( "  ChaCha20 test %u ", i );
 
-        ret = mbedtls_chacha20_crypt( test_keys[i],
-                                      test_nonces[i],
-                                      test_counters[i],
-                                      test_lengths[i],
-                                      test_input[i],
+        ret = mbedtls_chacha20_crypt( chacha20_test_keys[i],
+                                      chacha20_test_nonces[i],
+                                      chacha20_test_counters[i],
+                                      chacha20_test_lengths[i],
+                                      chacha20_test_input[i],
                                       output );
 
         ASSERT( 0 == ret, ( "error code: %i\n", ret ) );
 
-        ASSERT( 0 == memcmp( output, test_output[i], test_lengths[i] ),
+        ASSERT( 0 == memcmp( output, chacha20_test_output[i], chacha20_test_lengths[i] ),
                 ( "failed (output)\n" ) );
 
         if( verbose != 0 )

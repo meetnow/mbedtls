@@ -294,10 +294,10 @@ static int net_would_block( const mbedtls_net_context *ctx )
 
     switch( errno = err )
     {
-#if defined EAGAIN
+#if defined(EAGAIN)
         case EAGAIN:
 #endif
-#if defined EWOULDBLOCK && EWOULDBLOCK != EAGAIN
+#if defined(EWOULDBLOCK) && EWOULDBLOCK != EAGAIN
         case EWOULDBLOCK:
 #endif
             return( 1 );

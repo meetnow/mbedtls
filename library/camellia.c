@@ -90,7 +90,7 @@ static const unsigned char SIGMA_CHARS[6][8] =
 
 #if defined(MBEDTLS_CAMELLIA_SMALL_MEMORY)
 
-static const unsigned char FSb[256] =
+static const unsigned char camellia_FSb[256] =
 {
     112,130, 44,236,179, 39,192,229,228,133, 87, 53,234, 12,174, 65,
      35,239,107,147, 69, 25,165, 33,237, 14, 79, 78, 29,101,146,189,
@@ -110,14 +110,14 @@ static const unsigned char FSb[256] =
      64, 40,211,123,187,201, 67,193, 21,227,173,244,119,199,128,158
 };
 
-#define SBOX1(n) FSb[(n)]
-#define SBOX2(n) (unsigned char)((FSb[(n)] >> 7 ^ FSb[(n)] << 1) & 0xff)
-#define SBOX3(n) (unsigned char)((FSb[(n)] >> 1 ^ FSb[(n)] << 7) & 0xff)
-#define SBOX4(n) FSb[((n) << 1 ^ (n) >> 7) &0xff]
+#define SBOX1(n) camellia_FSb[(n)]
+#define SBOX2(n) (unsigned char)((camellia_FSb[(n)] >> 7 ^ camellia_FSb[(n)] << 1) & 0xff)
+#define SBOX3(n) (unsigned char)((camellia_FSb[(n)] >> 1 ^ camellia_FSb[(n)] << 7) & 0xff)
+#define SBOX4(n) camellia_FSb[((n) << 1 ^ (n) >> 7) &0xff]
 
 #else /* MBEDTLS_CAMELLIA_SMALL_MEMORY */
 
-static const unsigned char FSb[256] =
+static const unsigned char camellia_FSb[256] =
 {
  112, 130,  44, 236, 179,  39, 192, 229, 228, 133,  87,  53, 234,  12, 174,  65,
   35, 239, 107, 147,  69,  25, 165,  33, 237,  14,  79,  78,  29, 101, 146, 189,
@@ -137,7 +137,7 @@ static const unsigned char FSb[256] =
  64,  40, 211, 123, 187, 201,  67, 193,  21, 227, 173, 244, 119, 199, 128, 158
 };
 
-static const unsigned char FSb2[256] =
+static const unsigned char camellia_FSb2[256] =
 {
  224,   5,  88, 217, 103,  78, 129, 203, 201,  11, 174, 106, 213,  24,  93, 130,
   70, 223, 214,  39, 138,  50,  75,  66, 219,  28, 158, 156,  58, 202,  37, 123,
@@ -157,7 +157,7 @@ static const unsigned char FSb2[256] =
  128,  80, 167, 246, 119, 147, 134, 131,  42, 199,  91, 233, 238, 143,   1,  61
 };
 
-static const unsigned char FSb3[256] =
+static const unsigned char camellia_FSb3[256] =
 {
   56,  65,  22, 118, 217, 147,  96, 242, 114, 194, 171, 154, 117,   6,  87, 160,
  145, 247, 181, 201, 162, 140, 210, 144, 246,   7, 167,  39, 142, 178,  73, 222,
@@ -177,7 +177,7 @@ static const unsigned char FSb3[256] =
   32,  20, 233, 189, 221, 228, 161, 224, 138, 241, 214, 122, 187, 227,  64,  79
 };
 
-static const unsigned char FSb4[256] =
+static const unsigned char camellia_FSb4[256] =
 {
  112,  44, 179, 192, 228,  87, 234, 174,  35, 107,  69, 165, 237,  79,  29, 146,
  134, 175, 124,  31,  62, 220,  94,  11, 166,  57, 213,  93, 217,  90,  81, 108,
@@ -197,10 +197,10 @@ static const unsigned char FSb4[256] =
   7,  85, 238,  10,  73, 104,  56, 164,  40, 123, 201, 193, 227, 244, 199, 158
 };
 
-#define SBOX1(n) FSb[(n)]
-#define SBOX2(n) FSb2[(n)]
-#define SBOX3(n) FSb3[(n)]
-#define SBOX4(n) FSb4[(n)]
+#define SBOX1(n) camellia_FSb[(n)]
+#define SBOX2(n) camellia_FSb2[(n)]
+#define SBOX3(n) camellia_FSb3[(n)]
+#define SBOX4(n) camellia_FSb4[(n)]
 
 #endif /* MBEDTLS_CAMELLIA_SMALL_MEMORY */
 
