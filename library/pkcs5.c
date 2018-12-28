@@ -319,10 +319,10 @@ int mbedtls_pkcs5_self_test( int verbose )
 
 #define MAX_TESTS   6
 
-static const size_t plen[MAX_TESTS] =
+static const size_t PKCS5_plen[MAX_TESTS] =
     { 8, 8, 8, 24, 9 };
 
-static const unsigned char password[MAX_TESTS][32] =
+static const unsigned char PKCS5_password[MAX_TESTS][32] =
 {
     "password",
     "password",
@@ -331,10 +331,10 @@ static const unsigned char password[MAX_TESTS][32] =
     "pass\0word",
 };
 
-static const size_t slen[MAX_TESTS] =
+static const size_t PKCS5_slen[MAX_TESTS] =
     { 4, 4, 4, 36, 5 };
 
-static const unsigned char salt[MAX_TESTS][40] =
+static const unsigned char PKCS5_salt[MAX_TESTS][40] =
 {
     "salt",
     "salt",
@@ -343,13 +343,13 @@ static const unsigned char salt[MAX_TESTS][40] =
     "sa\0lt",
 };
 
-static const uint32_t it_cnt[MAX_TESTS] =
+static const uint32_t PKCS5_it_cnt[MAX_TESTS] =
     { 1, 2, 4096, 4096, 4096 };
 
-static const uint32_t key_len[MAX_TESTS] =
+static const uint32_t PKCS5_key_len[MAX_TESTS] =
     { 20, 20, 20, 25, 16 };
 
-static const unsigned char result_key[MAX_TESTS][32] =
+static const unsigned char PKCS5_result_key[MAX_TESTS][32] =
 {
     { 0x0c, 0x60, 0xc8, 0x0f, 0x96, 0x1f, 0x0e, 0x71,
       0xf3, 0xa9, 0xb5, 0x24, 0xaf, 0x60, 0x12, 0x06,
@@ -395,10 +395,12 @@ int mbedtls_pkcs5_self_test( int verbose )
         if( verbose != 0 )
             mbedtls_printf( "  PBKDF2 (SHA1) #%d: ", i );
 
-        ret = mbedtls_pkcs5_pbkdf2_hmac( &sha1_ctx, password[i], plen[i], salt[i],
-                                  slen[i], it_cnt[i], key_len[i], key );
+        ret = mbedtls_pkcs5_pbkdf2_hmac( &sha1_ctx, PKCS5_password[i],
+                                         PKCS5_plen[i], PKCS5_salt[i],
+                                         PKCS5_slen[i], PKCS5_it_cnt[i],
+                                         PKCS5_key_len[i], key );
         if( ret != 0 ||
-            memcmp( result_key[i], key, key_len[i] ) != 0 )
+            memcmp( PKCS5_result_key[i], key, PKCS5_key_len[i] ) != 0 )
         {
             if( verbose != 0 )
                 mbedtls_printf( "failed\n" );
