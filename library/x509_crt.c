@@ -368,7 +368,7 @@ static void x509_crt_verify_chain_reset(
     for( i = 0; i < MBEDTLS_X509_MAX_VERIFY_CHAIN_SIZE; i++ )
     {
         ver_chain->items[i].crt = NULL;
-        ver_chain->items[i].flags = -1;
+        ver_chain->items[i].flags = (uint32_t) -1;
     }
 
     ver_chain->len = 0;
@@ -1931,8 +1931,8 @@ static int x509_crt_find_parent_in(
                         mbedtls_x509_crt_restart_ctx *rs_ctx )
 {
     int ret;
-    mbedtls_x509_crt *parent, *fallback_parent;
-    int signature_is_good, fallback_signature_is_good;
+    mbedtls_x509_crt *parent, *fallback_parent = NULL;
+    int signature_is_good = 0, fallback_signature_is_good = 0;
 
 #if defined(MBEDTLS_ECDSA_C) && defined(MBEDTLS_ECP_RESTARTABLE)
     /* did we have something in progress? */
@@ -1952,9 +1952,6 @@ static int x509_crt_find_parent_in(
         goto check_signature;
     }
 #endif
-
-    fallback_parent = NULL;
-    fallback_signature_is_good = 0;
 
     for( parent = candidates; parent != NULL; parent = parent->next )
     {

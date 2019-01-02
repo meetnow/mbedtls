@@ -123,12 +123,12 @@ int mbedtls_x509write_crt_set_validity( mbedtls_x509write_cert *ctx, const char 
 }
 
 int mbedtls_x509write_crt_set_extension( mbedtls_x509write_cert *ctx,
-                                 const char *oid, size_t oid_len,
-                                 int critical,
-                                 const unsigned char *val, size_t val_len )
+                                    const char *oid, size_t oid_len,
+                                    unsigned char critical,
+                                    const unsigned char *val, size_t val_len )
 {
     return mbedtls_x509_set_extension( &ctx->extensions, oid, oid_len,
-                               critical, val, val_len );
+                                       critical, val, val_len );
 }
 
 int mbedtls_x509write_crt_set_basic_constraints( mbedtls_x509write_cert *ctx,

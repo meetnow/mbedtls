@@ -309,9 +309,9 @@ int mbedtls_x509_sig_alg_gets( char *buf, size_t size, const mbedtls_x509_buf *s
                        const void *sig_opts );
 int mbedtls_x509_key_size_helper( char *buf, size_t buf_size, const char *name );
 int mbedtls_x509_string_to_names( mbedtls_asn1_named_data **head, const char *name );
-int mbedtls_x509_set_extension( mbedtls_asn1_named_data **head, const char *oid, size_t oid_len,
-                        int critical, const unsigned char *val,
-                        size_t val_len );
+int mbedtls_x509_set_extension( mbedtls_asn1_named_data **head, const char *oid,
+                                size_t oid_len, unsigned char critical,
+                                const unsigned char *val, size_t val_len );
 int mbedtls_x509_write_extensions( unsigned char **p, unsigned char *start,
                            mbedtls_asn1_named_data *first );
 int mbedtls_x509_write_names( unsigned char **p, unsigned char *start,

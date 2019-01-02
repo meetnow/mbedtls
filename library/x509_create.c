@@ -210,8 +210,9 @@ exit:
 /* The first byte of the value in the mbedtls_asn1_named_data structure is reserved
  * to store the critical boolean for us
  */
-int mbedtls_x509_set_extension( mbedtls_asn1_named_data **head, const char *oid, size_t oid_len,
-                        int critical, const unsigned char *val, size_t val_len )
+int mbedtls_x509_set_extension( mbedtls_asn1_named_data **head, const char *oid,
+                                size_t oid_len, unsigned char critical,
+                                const unsigned char *val, size_t val_len )
 {
     mbedtls_asn1_named_data *cur;
 
@@ -250,9 +251,9 @@ static int x509_write_name( unsigned char **p, unsigned char *start, mbedtls_asn
 
     // Write correct string tag and value
     MBEDTLS_ASN1_CHK_ADD( len, mbedtls_asn1_write_tagged_string( p, start,
-                                                       cur_name->val.tag,
-                                                       (const char *) name,
-                                                       name_len ) );
+                                            (unsigned char) cur_name->val.tag,
+                                            (const char *) name,
+                                            name_len ) );
     // Write OID
     //
     MBEDTLS_ASN1_CHK_ADD( len, mbedtls_asn1_write_oid( p, start, oid,

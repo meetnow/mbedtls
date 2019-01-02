@@ -332,7 +332,7 @@ int mbedtls_mpi_lset( mbedtls_mpi *X, mbedtls_mpi_sint z );
  *                 of \c X is unset or set.
  * \return         A negative error code on failure.
  */
-int mbedtls_mpi_get_bit( const mbedtls_mpi *X, size_t pos );
+unsigned char mbedtls_mpi_get_bit( const mbedtls_mpi *X, size_t pos );
 
 /**
  * \brief          Modify a specific bit in an MPI.

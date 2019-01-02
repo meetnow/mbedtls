@@ -219,7 +219,7 @@ int mbedtls_x509write_csr_der( mbedtls_x509write_csr *ctx, unsigned char *buf, s
         MBEDTLS_ASN1_CHK_ADD( ch_len, mbedtls_asn1_write_raw_buffer( &c, tmp_buf,
                                                         ctx->challenge.p, ctx->challenge.len ) );
         MBEDTLS_ASN1_CHK_ADD( ch_len, mbedtls_asn1_write_len( &c, tmp_buf, ctx->challenge.len ) );
-        MBEDTLS_ASN1_CHK_ADD( ch_len, mbedtls_asn1_write_tag( &c, tmp_buf, ctx->challenge.tag ) );
+        MBEDTLS_ASN1_CHK_ADD( ch_len, mbedtls_asn1_write_tag( &c, tmp_buf, (unsigned char)ctx->challenge.tag ) );
 
         MBEDTLS_ASN1_CHK_ADD( ch_len, mbedtls_asn1_write_len( &c, tmp_buf, ch_len ) );
         MBEDTLS_ASN1_CHK_ADD( ch_len, mbedtls_asn1_write_tag( &c, tmp_buf, MBEDTLS_ASN1_CONSTRUCTED |

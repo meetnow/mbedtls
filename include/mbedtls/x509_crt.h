@@ -672,9 +672,9 @@ void mbedtls_x509write_crt_set_md_alg( mbedtls_x509write_cert *ctx, mbedtls_md_t
  * \return          0 if successful, or a MBEDTLS_ERR_X509_ALLOC_FAILED
  */
 int mbedtls_x509write_crt_set_extension( mbedtls_x509write_cert *ctx,
-                                 const char *oid, size_t oid_len,
-                                 int critical,
-                                 const unsigned char *val, size_t val_len );
+                                    const char *oid, size_t oid_len,
+                                    unsigned char critical,
+                                    const unsigned char *val, size_t val_len );
 
 /**
  * \brief           Set the basicConstraints extension for a CRT

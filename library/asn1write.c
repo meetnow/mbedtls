@@ -240,7 +240,7 @@ int mbedtls_asn1_write_int( unsigned char **p, unsigned char *start, int val )
         return( MBEDTLS_ERR_ASN1_BUF_TOO_SMALL );
 
     len += 1;
-    *--(*p) = val;
+    *--(*p) = (unsigned char) val;
 
     if( val > 0 && **p & 0x80 )
     {
@@ -257,8 +257,9 @@ int mbedtls_asn1_write_int( unsigned char **p, unsigned char *start, int val )
     return( (int) len );
 }
 
-int mbedtls_asn1_write_tagged_string( unsigned char **p, unsigned char *start, int tag,
-    const char *text, size_t text_len )
+int mbedtls_asn1_write_tagged_string( unsigned char **p, unsigned char *start,
+                                      unsigned char tag, const char *text,
+                                      size_t text_len )
 {
     int ret;
     size_t len = 0;

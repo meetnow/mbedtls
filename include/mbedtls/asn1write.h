@@ -201,7 +201,7 @@ int mbedtls_asn1_write_int( unsigned char **p, unsigned char *start, int val );
  * \return          A negative error code on failure.
  */
 int mbedtls_asn1_write_tagged_string( unsigned char **p, unsigned char *start,
-                                      int tag, const char *text,
+                                      unsigned char tag, const char *text,
                                       size_t text_len );
 
 /**

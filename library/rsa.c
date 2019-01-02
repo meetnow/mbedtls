@@ -1538,9 +1538,9 @@ static void mem_move_to_left( void *start,
         {
             unsigned char current = buf[n];
             unsigned char next = buf[n+1];
-            buf[n] = if_int( no_op, current, next );
+            buf[n] = (unsigned char) if_int( no_op, current, next );
         }
-        buf[total-1] = if_int( no_op, buf[total-1], 0 );
+        buf[total-1] = (unsigned char) if_int( no_op, buf[total-1], 0 );
     }
 }
 
@@ -2561,7 +2561,7 @@ static int myrand( void *rng_state, unsigned char *output, size_t len )
         rng_state  = NULL;
 
     for( i = 0; i < len; ++i )
-        output[i] = rand();
+        output[i] = (unsigned char)(rand() % 256);
 #else
     if( rng_state != NULL )
         rng_state = NULL;
