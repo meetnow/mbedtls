@@ -802,8 +802,11 @@ int mbedtls_x509_get_subject_alt_name( unsigned char **p,
                     MBEDTLS_ERR_ASN1_UNEXPECTED_TAG );
         }
 
-        /* Skip everything but email, DNS name and URN */
-        if( tag != ( MBEDTLS_ASN1_CONTEXT_SPECIFIC | 1 ) && tag != ( MBEDTLS_ASN1_CONTEXT_SPECIFIC | 2 ) && tag != ( MBEDTLS_ASN1_CONTEXT_SPECIFIC | 6 ) )
+        /* Skip everything but email, DNS name, URN and IP */
+        if( tag != ( MBEDTLS_ASN1_CONTEXT_SPECIFIC | 1 ) &&
+            tag != ( MBEDTLS_ASN1_CONTEXT_SPECIFIC | 2 ) &&
+            tag != ( MBEDTLS_ASN1_CONTEXT_SPECIFIC | 6 ) &&
+            tag != ( MBEDTLS_ASN1_CONTEXT_SPECIFIC | 7 ) )
         {
             *p += tag_len;
             continue;
